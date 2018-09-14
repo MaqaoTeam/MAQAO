@@ -1,0 +1,150 @@
+--- Declares methods that can be invoked on a loop
+-- (instance of the 'loop' class)
+module loop
+
+-- ------------------ Essential functions ----------------------
+
+--- Returns the function containing a loop
+-- @return function
+function loop:get_function ()
+
+--- Returns the identifier (ID) of a loop
+-- @return loop identifier
+function loop:get_id ()
+
+--- Returns the parent loop (including a given loop)
+-- @return parent loop
+function loop:get_parent ()
+
+--- Returns a table of children loops (included into a loop)
+-- @return loops table
+function loop:get_children ()
+
+--- Iterates over children loops
+-- @return next child loop
+function loop:children ()
+
+--- Returns a table of entry blocks
+-- @return blocks table
+function loop:get_entries ()
+
+--- Returns a table of exit blocks
+-- @return blocks table
+function loop:get_exits ()
+
+--- Iterates over all blocks
+-- @return next block
+function loop:blocks ()
+
+--- Returns the number of paths without building them (fast)
+-- @return number of paths
+function loop:get_nb_paths ()
+
+--- Iterates over the paths of a loop
+-- @return next path (as a table of blocks)
+function loop:paths ()
+
+--- Checks whether paths are already computed for a loop
+-- Used to avoid calling loop:free_paths in a function F
+-- when called by another one relying on paths after exit from F
+-- @return boolean
+function loop:are_paths_computed ()
+
+--- Frees paths computed by loop:paths
+function loop:free_paths ()
+
+--- Returns a table of groups
+-- @return groups table
+function loop:get_groups ()
+
+--- Iterates over groups of a loop
+-- @return next group
+function loop:groups ()
+
+--- Changes the function associated to a loop
+-- @param new_fct the new function to associate to the loop
+function loop:set_function (new_fct)
+
+--- Returns all groups as a table
+-- @return a table containing a subtable per group. Each subtable
+-- structure is describe in group:totable ()
+-- @see group:totable
+function loop:get_groups_totable ()
+
+
+-- ------------------ Shortcut functions -----------------------
+
+--- Returns the project containing a loop
+-- @return project
+function loop:get_project ()
+
+--- Returns the asmfile containing a loop
+-- @return asmfile
+function loop:get_asmfile ()
+
+--- Returns the first entry basic block of a loop
+-- @return entry block
+function loop:get_first_entry ()
+
+--- Returns the first path of a loop
+-- @return path (table of blocks)
+function loop:get_first_path ()
+
+--- Returns the number of entries (entry basic blocks) in a loop
+-- @return number of entries
+function loop:get_nentries ()
+
+--- Returns the number of exits (exit basic blocks) in a loop
+-- @return number of exits
+function loop:get_nexits ()
+
+--- Returns the number of basic blocks in a loop (excluding virtual blocks, not exposed in LUA structures)
+-- @return number of basic blocks
+function loop:get_nblocks ()
+
+--- Returns the number of instructions in a loop
+-- @return number of instructions
+function loop:get_ninsns ()
+
+--- Tests wether a loop is innermost
+-- @return boolean
+function loop:is_innermost ()
+
+--- Tests wether a loop is outermost
+-- @return boolean
+function loop:is_outermost ()
+
+-- -------------------- Other functions ----------------------
+
+--- Returns a queue containing information on how to lighten instrumentation
+-- for each block of a given loop.
+-- @return queue of outer_light_t structures (one for each block of the loop)
+function loop:get_light_instru ()
+
+--- Tests wether a loop has groups
+-- @return boolean
+function loop:has_groups ()
+
+--- Returns the DDG (Data Dependency Graph) of a loop
+-- @return DDG (graph)
+function loop:get_DDG ()
+
+--- Prints the data dependency graph (DDG) of a loop to a DOT file (paths are merged)
+-- For each path of the loop, prints the corresponding DDG to a DOT file
+-- @return path to the output file
+function loop:get_DDG_file_path ()
+
+--- Returns path to the source file defining a loop
+-- @return path to source file (string)
+function loop:get_src_file_path ()
+
+--- Returns minimum and maximum source lines defining a loop
+-- @note "monitored" source file is the one defined in first instruction
+-- (in first entry block)
+-- @return min, max (ex: 18,24 if loop ranges from lines 18 to 24)
+function loop:get_src_lines ()
+
+-- -------------------- Meta functions -------------------------
+
+--- Print "Loop: <global identifier of the loop>" (meta-method)
+function loop:tostring ()

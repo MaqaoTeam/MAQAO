@@ -1,0 +1,22 @@
+This directory contains files defining the functions called by push_general_properties.
+
+Call graph of the two first level functions:
+
+Function name            | Definition file
+----------------------------------------------------
+push_general_properties  | ../general_properties.lua
+ - get_length            | length.lua
+ - get_packed_ratios     | packed_ratios.lua
+ - get_FP_ops            | FP_ops.lua
+ - get_nb_add_sub_mul    | nb_add_sub_mul.lua
+ - get_moved_bytes       | moved_bytes.lua
+
+get_length returns length of a sequence of instructions, which is the sum of the length (in bytes) of all instructions.
+
+get_packed_ratios returns vectorization ratio of a sequence of instructions, with details for all instruction types.
+
+get_FP_ops returns the number of common arithmetical FP operations of a sequence of instructions.
+
+get_nb_add_sub_mul returns the number of FP (Floating-Point) addition/subtraction or multiplication instructions in a sequence of instructions.
+
+get_moved_bytes returns the number of bytes moved (loaded or stored) by a sequence of instructions.

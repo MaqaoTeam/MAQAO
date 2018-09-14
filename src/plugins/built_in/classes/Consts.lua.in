@@ -1,0 +1,82 @@
+---
+--  Copyright (C) 2004 - 2018 Université de Versailles Saint-Quentin-en-Yvelines (UVSQ)
+--
+-- This file is part of MAQAO.
+--
+-- MAQAO is free software; you can redistribute it and/or
+--  modify it under the terms of the GNU Lesser General Public License
+--  as published by the Free Software Foundation; either version 3
+--  of the License, or (at your option) any later version.
+--
+--  This program is distributed in the hope that it will be useful,
+--  but WITHOUT ANY WARRANTY; without even the implied warranty of
+--  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+--  GNU Lesser General Public License for more details.
+--
+--  You should have received a copy of the GNU Lesser General Public License
+--  along with this program; if not, write to the Free Software
+--  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+---
+
+Consts = {};
+
+ConstsMeta = {};
+ConstsMeta._NAME       = "Consts";
+ConstsMeta.__index     = Consts;
+ConstsMeta.__tostring  = Consts.tostring;
+
+
+-- Must be the same than its java counterpart
+Consts.ERROR_TYPE           = -1
+Consts.ASMCODE_TYPE         = 1
+Consts.SRCCODE_TYPE         = 2
+Consts.DIR_TYPE				   = 3
+Consts.CGNAME_TYPE          = 4
+Consts.CG_TYPE              = 5
+Consts.CFGNAME_TYPE         = 6
+Consts.CFG_TYPE             = 7
+Consts.FUNCSTAT_TYPE        = 8
+Consts.LOOP_SELECT          = 9
+Consts.LOOPSTAT_TYPE        = 10
+Consts.REPORT_TYPE          = 11
+Consts.FUNCLIST_TYPE        = 12
+Consts.LOOPLIST_TYPE        = 13
+Consts.DETAILED_REPORT_TYPE = 14
+Consts.LOOP_DDG_TYPE        = 15
+Consts.PROFILE_TYPE         = 16
+Consts.LOOP_VERSIONING_TYPE = 17
+Consts.OPTIONS_TYPE         = 18
+
+-- Paths
+Consts.GRAPHS_PATH = "@GRAPHS_PATH@"
+Consts.MAQAO_PATH = "@_INSTALL_DIR@"
+Consts.ENVVAR_MODULES_PATH = "MAQAO_PLUGIN_PATH"
+
+-- GUI options
+Consts.IP 		= "127.0.0.1"
+Consts.PORT	= "8180"
+Consts.LOCAL_PORT = 8080
+Consts.ITER						= 1
+Consts.LOC = 50
+Consts.GRAPH_INTERFACE = "Exagraph"
+
+-- OS specific variables
+Consts.is_UNIX    = @is_UNIX@
+Consts.is_APPLE   = @is_APPLE@
+Consts.is_WINDOWS = @is_WINDOWS@
+
+-- Compiler path
+Consts.COMPILER_FULLPATH = "@CMAKE_C_COMPILER@"
+
+-- Loading generated constants
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/Consts_c.lua")
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/Consts_errs.lua")
+
+-- Declaration of architectures definitions
+@LUA_ARCH_DECLS@
+-- Inclusion of architectures C constants
+@CONSTS_ARCHS_INCLUDES@
+
+function Consts:tostring ()
+   return "Consts defined by MAQAO"
+end

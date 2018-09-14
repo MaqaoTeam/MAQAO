@@ -1,0 +1,94 @@
+---
+--  Copyright (C) 2004 - 2018 Université de Versailles Saint-Quentin-en-Yvelines (UVSQ)
+--
+-- This file is part of MAQAO.
+--
+-- MAQAO is free software; you can redistribute it and/or
+--  modify it under the terms of the GNU Lesser General Public License
+--  as published by the Free Software Foundation; either version 3
+--  of the License, or (at your option) any later version.
+--
+--  This program is distributed in the hope that it will be useful,
+--  but WITHOUT ANY WARRANTY; without even the implied warranty of
+--  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+--  GNU Lesser General Public License for more details.
+--
+--  You should have received a copy of the GNU Lesser General Public License
+--  along with this program; if not, write to the Free Software
+--  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+---
+
+
+-- These lines are added to explain to lua interpreter where to look for libraries
+package.cpath=package.cpath..";@PREFIX@/src/maqao/?.so"
+
+-- For MacOS X
+package.cpath=package.cpath..";@PREFIX@/src/maqao/?.dylib"
+
+-- For Windows
+package.cpath=package.cpath..";@PREFIX@/src/maqao/?.dll"
+
+LUA_ROOT_PATH       = "@PREFIX@/src/plugins/";
+
+-- Load needed modules
+require "fs" 
+require "lfs"
+require "bitops"
+
+dofile (LUA_ROOT_PATH.."/built_in/classes/Table.lua")
+dofile (LUA_ROOT_PATH.."/built_in/classes/String.lua")
+dofile (LUA_ROOT_PATH.."/built_in/classes/Utils.lua")
+dofile (LUA_ROOT_PATH.."/built_in/classes/Base64.lua")
+
+
+
+
+local function _load_dir_rec (path, var, outfile)
+   local content = fs.readdir (path)
+   for _, f in pairs (content) do
+      if  f.name ~= "."
+      and f.name ~= ".." then
+         if lfs.attributes (path.."/"..f.name, "mode") == "file" then
+            outfile:write (var.."[\""..f.name.."\"] = \"")
+            -- Get the b64 version of the file and store it in the images file
+            Base64:b64_encode_filetofile(path.."/"..f.name, outfile)
+            outfile:write ("\"\n")
+
+         elseif lfs.attributes (path.."/"..f.name, "mode") == "directory" then
+            outfile:write (var.."[\""..f.name.."\"] = {}\n")
+            _load_dir_rec (path.."/"..f.name, 
+                           var.."[\""..f.name.."\"]", 
+                           outfile)
+         end
+      end
+   end
+end
+
+
+
+
+
+
+
+
+local outfile = io.open (LUA_ROOT_PATH.."/images_db.lua", "w")
+outfile:write ("-- This file contains all images used by MAQAO modules saved in base64\n")
+outfile:write ("-- /!\\ It is generated during the compilation of MAQAO\n")
+outfile:write ("-- and should not be modified by hand /!\\ \n")
+outfile:write ("maqao_images = {}\n")
+
+-- Get the list of modules
+local module_list = {}
+Utils:scan_dir (LUA_ROOT_PATH, module_list)
+
+for i, module in pairs(module_list) do
+   if fs.exists (LUA_ROOT_PATH.."/"..module.name.."/images") then
+      outfile:write ("maqao_images[\""..module.name.."\"] = {}\n")
+      _load_dir_rec (LUA_ROOT_PATH.."/"..module.name.."/images", 
+                     "maqao_images[\""..module.name.."\"]", 
+                     outfile)
+   end
+end
+
+outfile:close ()
+

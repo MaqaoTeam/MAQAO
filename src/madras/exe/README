@@ -1,0 +1,101 @@
+
+Madras 2.0.0 Release Notes
+========================
+
+Madras is a multi architecture tool and library allowing to disassemble and patch ELF executables.
+Currently only the x86 (64bits) architecture is supported.
+
+Madras can be used as a standalone tool (the madras executable) or as an API (file libmadras.h).
+
+Installation and uses
+=====================
+Madras is packed with MAQAO and is automatically compiled with it.
+
+Files using the libmadras API must add the following libraries to their compilation chain:
+> -lmcommon -lmasm -lmdisass -lmtroll -ldwarf -lmpatch -lmyelf
+and the architecture specific files:
+> -lmadras -lmarchx86_64 -lmdsmblx86_64 -lmasmblx86_64 -lmpatchx86_64
+as well a library containing extensions ( -lextsx86_64_empty or  -lextsx86_64)
+
+Example usage
+=============
+madras
+------
+The madras executable allows mainly to test the disassembling functionality of MADRAS.
+It can also allow to test the basic patching functionalities.
+Below are some sample of the way madras can be run : 
+> ./madras -d <filename> 
+	Disassemble ELF file <filename> and displays the contents of the .text section 
+
+> ./madras -D <filename> 
+	Disassemble ELF file <filename> and displays the contents of all executable sections
+
+> ./madras -h
+	Displays help (full list of commands and options)
+
+madras-patcher:
+---------------
+The file madras-patcher.c offers an example as to how the functions available through libmadras.h 
+can be used. 
+It is mainly intended as a sample but can also be used as is to disassemble and patch files.
+It is not compiled by default and must be using the command: make madras-patcher
+Below are some examples of the way madras-patcher can be run:
+> ./madras-patcher <filename> 
+	Disassembles file <filename> and printing the results
+> ./madras-patcher <filename> <funcname> 
+	Checks if <funcname> is a function and prints its code
+> ./madras-patcher <filename> <instructions> <address> <outfile>
+	Inserts a list of instructions at a given address and saves the result into <outfile>
+> ./madras-patcher <filename> <instrumented fct> <library> <instru fct> <outfile> 
+	Inserts function calls to function <instru fct> (defined in library <library>) into the
+	function <instrumented fct>, and saves the result in the file <outfile>.
+	The function calls are inserted after each "MOV" instruction using a memory operand (this 
+	behaviour can be modified by altering the code of the function test_instrument)
+
+Further options can be printed by typing ./madras-patcher on the command line.
+
+Empty extensions
+================
+The directory src/x86_64 contains source files for generating a library with no extensions for use with the disassembler.
+For compiling a version of the disassembler that does not uses extensions, add -lextsx86_64_empty to the compilation chain.
+
+Tests
+=====
+The /test subdirectory contains scripts for testing the libmadras API and functionalities.
+
+There are 4 main test scripts for the x86_64 architecture:
+- test-x86_64-disass.sh: Test of the disassembler on a shorter but exhaustive list of instructions.
+- test-x86_64-fulldisass.s: Exhaustive tests the accuracy of the disassembler. Those tests can take some time to complete.
+- test-x86_64-api.sh: Tests most API functions for disassembling a file, retrieving data from it, and patching it
+- test-x86_64-patch.sh: Tests function insertion using all possible combinations of memory operands as parameters
+
+All test scripts return 0 if the test succeeded and 1 if it failed.
+
+Examples
+========
+The /examples subdirectory contains sample executables to test the disassembler and patcher.
+
+Test libraries
+--------------
+The subdirectory examples/patchlibs contains sample libraries defining functions that can be used to test the patcher by inserting calls to them. 
+Files patched using functions from these libraries need the environment variable LD_LIBRARY_PATH to contain the path to the test/patchlibs subdirectory to be run.
+There are currently 3 libraries:
+- libtstprinter.so: Contains functions for printing messages. Printed messages can contain integers or string parameters passed from the patched file.
+- libtsttimer.so: Contains simple functions for timing the program execution between two points and print the result
+- libtstinstru.so: Contains simple functions that can be used for testing the insertion and use of global variables in a file (increasing counters passed as pointers, returning values)
+
+Full documentation
+==================
+The full documentation of Madras is available in doxygen format. 
+Run make doc in the main Madras directory to generate it.
+
+Known bugs and limitations
+==========================
+* The insertion of functions feature make the following assumptions in order to work correctly:
+   - The target executable contains ELF sections headers 
+(in ELF standard those are not mandatory for an executable)
+   - The target executable uses lazy binding for invoking external functions
+   - The inserted functions belong to an external library (they are not internal 
+functions of the executable)
+* Madras has not been extensively tested as of now and some bugs can remain in the main functions
+* A more extensive list of bugs and limitations is present in the documentation

@@ -1,0 +1,14 @@
+This document is dedicated to CQA developers. For users see manpage via "maqao cqa -h"
+
+Directory content
+-----------------
+ - README: this file
+ - alias: MAQAO-specific file to enable "maqao cqa"
+ - consts.lua: constants used by both CQA tool and library
+
+ - cqa.lua: defines the CQA *tool* and in particular its entry point, cqa:cqa_launch
+ - help.lua: about CQA tool help
+ - output/*: about CQA tool output (TXT, HTML, CSV, JSON)
+
+ - api.lua: defines the CQA API
+ - api/*: defines functions declared in api.lua

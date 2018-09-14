@@ -1,0 +1,358 @@
+--- Declares methods that can be invoked on binary containing DWARF information
+-- (instance of the 'dwarf' class)
+module dwarf
+
+
+--- Initialize the API session for a given binary name
+-- @param filename the filename of the binary to analyze
+-- @return a DwarfAPI pointer, an API handler for the binary
+function dwarf_api.init (filename)
+
+
+--- Finish the API session
+function api:finish ()
+
+--- Get the current API session
+-- @return a DwarfAPI pointer, the current API session
+function api:get ()
+
+--- Get a function by its address
+-- @param address the address of the first instruction of the function (low_pc)
+-- @return a DwarfFunction pointer
+function api:get_function_by_addr (address)
+
+--- Get a function by its name
+-- @param name the demangled name of the function
+-- @return a DwarfFunction pointer
+function api:get_function_by_name (name)
+
+--- Get a file by its name
+-- @param name the name of the file
+-- @return a DwarfFile pointer
+function api:get_file_by_name (name)
+
+--- Get a line number by its address
+-- @param address the address of the line
+-- @return a line number
+function api:get_line (address)
+
+--- TODO : Get an array of lines by their addresses
+function api:get_lines ()
+
+--- Get the current verbose
+function api:get_verbose ()
+
+--- Set the verbose
+-- @param verbose The verbose level : 0 mute all the warning and error messages. 1 enable some of them, the most important. 2 enable all of them. The default verbose is 1.
+function api:set_verbose (verbose)
+
+--- Get the list of files of the binary
+-- @return an iterator on DwarfFile queue
+function api:get_files ()
+
+--- Get the count of files in the binary
+-- @return the count of files
+function api:get_files_count ()
+
+--- Get the list of globals of the binary
+-- @return an iterator on DwarfGlobal queue
+function api:get_globals ()
+
+--- Get the count of files in the binary
+-- @return the count of files
+function api:get_globals_count ()
+
+--- Get the list of containers of the binary
+-- @return an iterator on DwarfContainer queue
+function api:get_containers ()
+
+--- Get the count of containers in the binary
+-- @return the count of containers
+function api:get_containers_count ()
+
+--- Get a global by its address
+-- @param address of the global to find
+-- @return a DwarfGlobal if the global has been found at this address, or NULL if it's not the case
+function api:get_global_by_address (address)
+
+--- Get a global by its name
+-- @param name The name of the global to find
+-- @return a DwarfGlobal if the global has been found at this address, or NULL if it's not the case
+function api:get_global_by_name (name)
+
+--- Generic debug function for the API
+function api:debug ()
+
+--- Get the name of the file
+-- @return a string containing the name of the file
+function file:get_name ()
+
+--- Get the directory of the file
+-- @return a string containing the name of the file
+function file:get_dir ()
+
+--- Get the version of the file 
+-- @return a string containing the directory of the file
+function file:get_version ()
+
+--- Get the language of the file
+-- @return a string containing the directory of the file
+function file:get_language ()
+
+--- Get the language of the file
+-- @return a string containing the directory of the file
+function file:get_vendor ()
+
+--- Get the functions in a file
+-- @return a list of functions
+function file:get_functions ()
+
+--- Get a function by its address
+-- @param address the address of the function;
+-- @return a DwarfFunction pointer
+function file:get_function_by_addr (address)
+
+--- Get a function by its name
+-- @param name the demangled name of the function 
+-- @return a DwarfFunction pointer
+function file:get_function_by_name (name)
+
+--- Get the count of the functions declared in the file
+-- @return the count of the functions declared in the file
+function file:get_function_count ()
+
+--- Generic debug function for a DwarfFile
+function file:debug ()
+
+--- Get the DwarfFile declaring the function
+-- @return a DwarfFile
+function func:get_file ()
+
+--- Get the name of the function
+-- @return a string containing the name of the function
+function func:get_name ()
+
+--- Get the linkage name of the function
+-- @return a string containing the linkage name of the function
+function func:get_linkage_name ()
+
+--- Get a list of parameters of the function
+-- @return a list of the parameters, DwarfVar
+function func:get_parameters ()
+
+--- Get a list of local variables of the function
+-- @return a list of the local variables, DwarfVar
+function func:get_locals ()
+
+--- Get the address of the first instruction of the function
+-- @return the address of the first instruction of the function
+function func:get_low_pc ()
+
+--- Get the address of the last instruction of the function
+-- @return the address of the last instruction of the function
+function func:get_high_pc ()
+
+--- Get the line declaring the function
+-- @return the line declaring the function
+function func:get_line ()
+
+--- Get the column declaring the function
+-- @return the column declaring the function
+function func:get_col ()
+
+--- Get the return variable of the function
+-- @return a DwarfVar which describe the return variable of the function
+function func:get_ret_var ()
+
+--- Get the count of the parameters declared in the function
+-- @return the count of the parameters declared in the function
+function func:get_param_count ()
+
+--- Get the count of the local variables declared in the function
+-- @return the count of the local variables declared in the function
+function func:get_local_count ()
+
+--- Generic debug function for a DwarfFunc
+function func:debug ()
+
+--- Test if the variable is const
+-- @return TRUE or FALSE
+function var:is_const ()
+
+--- Test if the variable is a struct
+-- @return TRUE or FALSE
+function var:is_struct ()
+
+--- Test if the variable is enum
+-- @return TRUE or FALSE
+function var:is_enum ()
+
+--- Test if the variable is inline
+-- @return TRUE or FALSE
+function var:is_inline ()
+
+--- Test if the variable is extern
+-- @return TRUE or FALSE
+function var:is_extern ()
+
+--- Test if the variable is static
+-- @return TRUE or FALSE
+function var:is_static ()
+
+--- Test if the variable is an array
+-- @return TRUE or FALSE
+function var:is_array ()
+
+--- Get the name of the variable
+-- @return a string containing the name of the variable
+function var:get_name ()
+
+--- Get the function declaring the variable
+-- @return a DwarfFunction 
+function var:get_function ()
+
+--- Get the type of the variable
+-- @return a string containing the basic type of the variable 
+function var:get_type ()
+
+--- Get the full type of the variable
+-- @return a string containing the full type of the variable (with *, and modifiers as struct enum extern etc)
+function var:get_full_type ()
+
+--- Get the number of pointers
+-- @return the number of pointers, i.e. 1 if the variable is char *var, 2 if the variable is char **var, etc.
+function var:get_pointer_count ()
+
+--- Get the size of the array
+-- @return the size of the array, 0 or -1 if not available
+function var:get_array_size ()
+
+--- Get the byte size of the array
+-- @return the byte size of the array
+function var:get_byte_size ()
+
+--- Get the line of declaration of the variable
+-- @return the line of declaration of the variable
+function var:get_line ()
+
+--- Get the column of declaration of the variable
+-- @return the column of declaration of the variable
+function var:get_col ()
+
+--- Get a list of the memory locations of a variable
+-- @return a list of the memory locations of a variable, DwarfMemLoc
+function var:get_mem_locations ()
+
+--- Get the count of memory locations of a variable
+-- @return count of memory locations of a variable
+function var:get_memlocs_count ()
+
+--- Get the first memory location of the variable
+-- @return a DwarfMemLoc, the first one of the variable
+function var:get_first_memloc ()
+
+--- Get the accessibility of the variable (for C++)
+-- @return the accessibility of the variable, 0 for public, 1 for protected, 2 for private
+function var:get_accessibility ()
+
+
+--- Get a string containing the accessibility of the variable (for C++)
+-- @return a string containing the accessibility of the variable, "public", "protected" or "private"
+function var:get_access_str ()
+
+--- Generic debug function for a DwarfVar
+function var:debug ()
+
+--- Get the DwarfVar of the global
+-- @return a DwarfVar
+function global:get_var ()
+
+--- Get the DwarfFile of the global
+-- @return a DwarfFile
+function global:get_file ()
+
+--- Generic debug function for a DwarfGlobal
+function global:debug ()
+
+--- Get the type of a DwarfMemLoc,
+-- @return the type of a DwarfMemLoc : DWARF_BREG, DWARF_ADDR or DWARF_REG
+function memloc:get_type ()
+
+--- Get a string containing the type of the memloc
+-- @return a string containing the type of the memloc
+function memloc:get_type_str ()
+
+--- Get the offset of the memory location
+-- @return the offset of the memory location if the type of the memloc is DWARF_BREG, or 0 if not the case
+function memloc:get_offset ()
+
+--- Get the address of the memory location
+-- @return the address of the memory location if the type of the memloc is DWARF_ADDR, or 0 if not the case
+function memloc:get_address ()
+
+--- Get the first instruction of the memory location
+-- @return the first instruction of the memory location
+function memloc:get_low_pc ()
+
+--- Get the last instruction of the memory location
+-- @return the last instruction of the memory location
+function memloc:get_high_pc ()
+
+--- Get the name of the register
+-- @return a string containing the name of the register ("EAX", "EBX", etc...)
+function memloc:get_reg_name ()
+
+--- Test if the memory location is a register or an address in a register + offset
+-- @return TRUE or FALSE
+function memloc:is_register ()
+
+--- Test if the memory location is an address
+-- @return TRUE or FALSE
+function memloc:is_address ()
+
+--- Generic debug function for a DwarfMemLoc
+function memloc:debug ()
+
+--- Get the list of DwarfObject of a DwarfContainer 
+-- @return the list of DwarfObject of a DwarfContainer 
+function container:get_objects ()
+
+--- Get the count of DwarfObject is the list
+-- @return the count of DwarfObject is the list
+function container:get_objects_count ()
+
+--- Get the name of the container
+-- @return the name of the container
+function container:get_name ()
+
+--- Get the type of the container
+-- @return the type of the container: DWARF_CONTAINER_CLASS  = 0, DWARF_CONTAINER_STRUCT = 1, DWARF_CONTAINER_ENUM = 2,     DWARF_CONTAINER_NAMESPACE = 3
+function container:get_type ()
+
+--- Get a string containing the type of the container
+-- @return a string containing the type of the container (DWARF_CONTAINER_CLASS, DWARF_CONTAINER_STRUCT, DWARF_CONTAINER_ENUM or DWARF_CONTAINER_NAMESPACE)
+function container:get_type_str ()
+
+--- Get the byte size of the container
+-- @return the byte size of the container
+function container:get_byte_size ()
+
+--- Generic debug function for a DwarfContainer
+function container:debug ()
+
+--- Get the data of the DwarfObject
+-- @return the data of the DwarfObject
+object:get_data ()
+
+--- Get the container type of the DwarfObject
+-- @return the container type of the DwarfObject
+object:get_ctn_type ()
+
+--- Generic debug function for a DwarfObject
+object:debug ()
+
+---------------------- Other functions ----------------------
+
+
+----------------------- Meta functions -------------------------
+

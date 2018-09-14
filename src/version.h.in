@@ -1,0 +1,46 @@
+/*
+   Copyright (C) 2004 - 2018 Université de Versailles Saint-Quentin-en-Yvelines (UVSQ)
+
+   This file is part of MAQAO.
+
+  MAQAO is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public License
+   as published by the Free Software Foundation; either version 3
+   of the License, or (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+
+#ifndef __CONFIG_H
+#define __CONFIG_H
+
+//@const_start
+
+#define MAQAO_VERSION   "@CPACK_PACKAGE_VERSION_MAJOR@.@CPACK_PACKAGE_VERSION_MINOR@.@CPACK_PACKAGE_VERSION_PATCH@"
+#define MAQAO_BUILD     "@BUILD_INFO@"
+#define MAQAO_DATE      "@MAQAO_DATE@"
+#define MAQAO_COPYRIGHT "MAQAO (C), 2004-2018 Universite de Versailles Saint-Quentin-en-Yvelines (UVSQ), \n"\
+                          "is distributed under the GNU Lesser General Public License (GNU LGPL). MAQAO is \n"\
+                          "free software; you can use it under the terms of the GNU Lesser General \n"\
+                          "Public License as published by the Free Software Foundation; either version 2.1 \n"\
+                          "of the License, or (at your option) any later version. This software is distributed \n"\
+                          "in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the \n"\
+                          "implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the \n"\
+                          "GNU Lesser General Public License for more details.\n"\
+                          "\n"\
+                          "The full legal text of the GNU Lesser General Public License (GNU LGPL) is available\n"\
+                          "at http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html."
+#define MAQAO_AUTHORS   "The MAQAO team"
+#define MAQAO_BUGREPORT "support@maqao.org"
+
+//@const_stop
+
+#endif

@@ -1,0 +1,233 @@
+--- Declares methods that can be invoked on a madras object
+-- (instance of the 'madras' class)
+-- A madras object encapsulates a binary file that can be modified
+module madras
+
+-- --------------------------------------------------------- --
+--      Constructor and destructor for a madras object       --
+-- --------------------------------------------------------- --
+
+--- Creates a madras object
+-- @usage obj = madras.new() (static invokation)
+-- @param path binary file path
+-- @return madras object or nil if failure
+function madras:new (path);
+
+--- Destructs a madras object (free related data structures...)
+function madras:terminate ()
+
+-- --------------------------------------------------------- --
+--                    Getters and testers                    --
+-- --------------------------------------------------------- --
+
+--- Checks whether a binary file is valid to be analyzed to MAQAO
+-- @param path binary file path
+-- @return boolean true if successful and false otherwise
+-- @return only if first return value is true: architecture code
+-- @return only if first return value is true: file type code (2 for an executable file)
+function madras:is_valid_binary (path)
+
+--- Checks whether the encapsulated binary file is an ELF executable file
+-- @return boolean
+function madras:is_executable ();
+
+--- Checks whether the encapsulated binary file is an ELF dynamic library
+-- @return boolean
+function madras:is_dynamic_library ();
+
+--- Checks whether the encapsulated binary file is an ELF relocatable file
+-- @return boolean
+function madras:is_relocatable ();
+
+--- Returns a table listing name of needed dynamic libraries
+-- @return table of strings
+function madras:get_dynamic_libraries ();
+
+-- --------------------------------------------------------- --
+--            External library related modifiers             --
+-- --------------------------------------------------------- --
+
+--- Adds a reference to an external library
+-- @param path external library path (or name of a library in LD_LIBRARY_PATH)
+-- @return boolean true if successful and false otherwise
+function madras:extlib_add (path)
+
+--- Renames a referenced external library
+-- @param old_name old name
+-- @param new_name new name
+-- @return boolean true if successful and false otherwise
+function madras:extlib_rename (old_name, new_name)
+
+-- --------------------------------------------------------- --
+--               Instruction related modifiers               --
+-- --------------------------------------------------------- --
+
+--- Inserts a sequence of instructions at a given address
+-- @param insnlist assembly code to insert (string)
+-- @see madras:fctcall_new for other parameters and return value
+-- @usage for the moment, it is not possible to use global variables
+function madras:insnlist_add (insnlist, addr, pos)
+
+--- Modifies an instruction at a given address
+-- @param addr address of the instruction to modify
+-- @param padding boolean. If true, NOPs will be generated
+-- when replacing an instruction by a shorter one
+-- @param opcode_name opcode name of the new instruction, for example "ADDSS"
+-- @param nb_oprnds number of operands
+-- @param ... operands (strings)
+-- @return boolean true if successfull and false otherwise
+function madras:modify_insn (addr, padding, opcode_name, nb_oprnds, ...)
+
+--- Deletes a sequence of instructions starting at a given address
+-- @param nb_insns number of instructions to delete
+-- @param addr address of the first instruction to delete
+-- @return boolean true if successfull and false otherwise
+function madras:delete_insns (nb_insns, addr)
+
+-- --------------------------------------------------------- --
+--               Function related modifiers                  --
+-- --------------------------------------------------------- --
+
+--- Adds a function without inserting any call
+-- @param fct_name name of the function to insert
+-- @param lib_name name of the library implementing the function
+-- (or "" for an internal function)
+-- @param fct_code assembly code of the function (not yet taken into account)
+-- @return boolean true if successful and false otherwise
+function madras:fct_add (fct_name, lib_name, fct_code)
+
+-- --------------------------------------------------------- --
+--             Function call related modifiers               --
+-- --------------------------------------------------------- --
+
+--- Inserts a function call at a given address
+-- @param fct_name name of the function to insert
+-- @param lib_name name of the library implementing the function
+-- (or "" for an internal function)
+-- @param addr address of the instruction before or after which the function should be inserted
+-- @param pos integer 1 (resp. 0) to insert after (resp. before) the instruction
+-- @return boolean true if successful and false otherwise
+function madras:fctcall_new (fct_name, lib_name, addr, pos)
+
+--- Inserts a function call with no context save/restore
+-- @see madras:fctcall_new
+function madras:fctcall_new_nowrap (fct_name, lib_name, addr, pos)
+
+--- Inserts an immediate parameter to the last function call
+-- @param imm immediate value
+-- @return boolean true if successful and false otherwise
+function madras:fctcall_addparam_imm (imm)
+
+--- Inserts to the last function call a parameter from an instruction at a given address
+-- @param oprnd_idx operand index
+-- @param addr instruction address
+-- @return boolean true if successful and false otherwise
+function madras:fctcall_addparam_frominsn (oprnd_idx, addr)
+
+--- Inserts a register parameter to the last function call
+-- @param regstr register parameter (string like "%XMM0")
+-- @return boolean true if successful and false otherwise
+function madras:fctcall_addparam_reg (regstr)
+
+--- Inserts a memory parameter to the last function call
+-- @param memstr memory parameter (string like "(%RAX,%RSI,4)")
+-- @return boolean true if successful and false otherwise
+function madras:fctcall_addparam_mem (memstr)
+
+--- Inserts to the last function call the address or the value of a global variable
+-- @param gvar global variable (returned by madras:gvar_new)
+-- @param string string that can be used instead gvar (used only if gvar is NULL)
+-- @param opts ("a" for address and "q" for value)
+-- @return boolean true if successful and false otherwise
+function madras:fctcall_addparam_from_gvar (gvar, string, opts)
+
+--- Inserts a return value to the last function call. The return value
+-- will be copied to a global variable which must already be initialized.
+-- @param gvar global variable (returned by madras:gvar_new)
+-- @return boolean true if successful and false otherwise
+function madras:fctcall_addreturnval (gvar)
+
+-- --------------------------------------------------------- --
+--                 Tracing related functions                 --
+-- --------------------------------------------------------- --
+
+--- Enables tracing
+-- A log file will be generated, containing the list of MADRAS function used
+function madras:traceon ()
+
+--- Disables tracing
+function madras:traceoff ()
+
+-- --------------------------------------------------------- --
+--               Functions to control patching               --
+-- --------------------------------------------------------- --
+
+--- Prepares a disassembled file for modification
+-- @param stack MDSAPI.STACK_{KEEP, MOVE, SHIFT} (see MADRAS documentation)
+-- @param shift shift value when stack is MDSAPI.STACK_SHIFT (unused for other stack values)
+-- @return boolean true if successful and false otherwise
+function madras:modifs_init (stack, shift)
+
+--- Adds patch options
+-- @param options MDSAPI.PATCHOPT_{FORCEINS, MOVEFCTS} or a bitwize OR of them
+-- @return boolean true if successful and false otherwise
+function madras:modifs_addopt (options)
+
+--- Removes patch options
+-- @param options MDSAPI.PATCHOPT_{FORCEINS, MOVEFCTS} or a bitwize OR of them
+-- @return boolean true if successful and false otherwise
+function madras:modifs_remopt (options)
+
+--- Commits modifications done since modifs_init
+-- @param name name of the generated (patched) binary file
+-- @return boolean true if successful and false otherwise
+function madras:modifs_commit (name)
+
+-- --------------------------------------------------------- --
+--                      Other functions                      --
+-- --------------------------------------------------------- --
+
+--- Adds a new global variable
+-- @param type 0=int, 1=string and 2=pointer
+-- @param size value size in bytes
+-- @param value initial value (ignored if pointer and set to NULL)
+-- @return boolean true if successful and false otherwise
+function madras:gvar_new (type, size, value)
+
+--- Change the OS the binary was created for
+-- @param code the new value for the OS ABI elf field, described by 
+--        constants MDSAPI.ELFOSABI_...
+-- @return boolean true if successful and false otherwise
+function madras:changeOSABI(code)
+
+--- Change the OS the binary was created for using a string
+-- @param str a string representing the new value for the OS ABI elf field.
+--        handled values are:
+-- <ul>
+--   <li>SystemV</li>
+--   <li>HP-UX</li>
+--   <li>NetBSD</li>
+--   <li>Linux</li>
+--   <li>Solaris</li>
+--   <li>AIX</li>
+--   <li>Irix</li>
+--   <li>FreeBSD</li>
+--   <li>TRU64</li>
+--   <li>Modesto</li>
+--   <li>OpenBSD</li>
+--   <li>ARM EABI</li>
+--   <li>ARM</li>
+-- </ul>
+-- @return boolean true if successful and false otherwise
+function madras:changeOSABI_fromstr (str)
+
+
+-- --------------------------------------------------------- --
+--                       Meta functions                      --
+-- --------------------------------------------------------- --
+
+--- Run explicit tasks to do during garbage collection (meta-method)
+function madras:gc ()
+
+--- Print "Madras Library Object" (meta-method)
+function madras:tostring ()

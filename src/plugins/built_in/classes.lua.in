@@ -1,0 +1,45 @@
+---
+--  Copyright (C) 2004 - 2018 Université de Versailles Saint-Quentin-en-Yvelines (UVSQ)
+--
+-- This file is part of MAQAO.
+--
+-- MAQAO is free software; you can redistribute it and/or
+--  modify it under the terms of the GNU Lesser General Public License
+--  as published by the Free Software Foundation; either version 3
+--  of the License, or (at your option) any later version.
+--
+--  This program is distributed in the hope that it will be useful,
+--  but WITHOUT ANY WARRANTY; without even the implied warranty of
+--  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+--  GNU Lesser General Public License for more details.
+--
+--  You should have received a copy of the GNU Lesser General Public License
+--  along with this program; if not, write to the Free Software
+--  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+---
+
+module("classes",package.seeall)
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/Table.lua");
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/Help.lua");
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/Consts.lua");
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/Utils.lua");
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/String.lua");
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/Message.lua");
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/Debug.lua");
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/Convert.lua");
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/Math.lua");
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/Graph.lua");
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/graph/DAG.lua");
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/Tree.lua");
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/Stack.lua");
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/List.lua");
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/Queue.lua");
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/SVG.lua");
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/MDSAPI.lua");
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/XLSX.lua");
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/HTML.lua");
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/Stream.lua");
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/TEXT.lua");
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/TextOutput.lua");
+dofile("@LUA_SCRIPTS_PATH@/built_in/classes/Base64.lua");
+

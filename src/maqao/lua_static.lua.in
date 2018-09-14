@@ -1,0 +1,377 @@
+---
+--  Copyright (C) 2004 - 2018 Université de Versailles Saint-Quentin-en-Yvelines (UVSQ)
+--
+-- This file is part of MAQAO.
+--
+-- MAQAO is free software; you can redistribute it and/or
+--  modify it under the terms of the GNU Lesser General Public License
+--  as published by the Free Software Foundation; either version 3
+--  of the License, or (at your option) any later version.
+--
+--  This program is distributed in the hope that it will be useful,
+--  but WITHOUT ANY WARRANTY; without even the implied warranty of
+--  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+--  GNU Lesser General Public License for more details.
+--
+--  You should have received a copy of the GNU Lesser General Public License
+--  along with this program; if not, write to the Free Software
+--  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+---
+
+-- This script parses MAQAO lua files to generate files which can be included into
+-- the static binary. Files are merged into bigger files then encrypted in b64.
+
+
+ROOT_PATH           = "@PREFIX@/";                    --path to MAQAO root
+LUA_ROOT_PATH       = "@PREFIX@/src/plugins/";        --path to plugin directory
+
+-- These lines are added to explain to lua interpreter where to look for libraries
+package.cpath=package.cpath..";@PREFIX@/src/maqao/?.so"
+
+-- For MacOS X
+package.cpath=package.cpath..";@PREFIX@/src/maqao/?.dylib"
+
+-- For Windows
+package.cpath=package.cpath..";@PREFIX@/src/maqao/?.dll"
+
+-- Load some files from MAQAO
+require "fs" 
+require "lfs"
+require "bitops"
+
+dofile (LUA_ROOT_PATH.."/built_in/classes/Table.lua")
+dofile (LUA_ROOT_PATH.."/built_in/classes/String.lua")
+dofile (LUA_ROOT_PATH.."/built_in/classes/Utils.lua")
+dofile (LUA_ROOT_PATH.."/built_in/classes/Base64.lua")
+
+
+
+local function _string_split(str, pat)
+   local t = {}  -- NOTE: use {n = 0} in Lua-5.0
+   local fpat = "(.-)" .. pat
+   local last_end = 1
+   local s, e, cap = str:find(fpat, 1)
+   while s do
+      if s ~= 1 or cap ~= "" then
+	 table.insert(t,cap)
+      end
+      last_end = e+1
+      s, e, cap = str:find(fpat, last_end)
+   end
+   if last_end <= #str then
+      cap = str:sub(last_end)
+      table.insert(t, cap)
+   end
+   return t
+end
+
+
+
+local function _string_split(str, pat)
+   local t = {}  -- NOTE: use {n = 0} in Lua-5.0
+   local fpat = "(.-)" .. pat
+   local last_end = 1
+   local s, e, cap = str:find(fpat, 1)
+   while s do
+      if s ~= 1 or cap ~= "" then
+	 table.insert(t,cap)
+      end
+      last_end = e+1
+      s, e, cap = str:find(fpat, last_end)
+   end
+   if last_end <= #str then
+      cap = str:sub(last_end)
+      table.insert(t, cap)
+   end
+   return t
+end
+
+-- Compares two files and replace file_orig with file_new if they are different
+local function _cmp_and_replace_file(file_orig, file_new)
+  if fs.exists(file_orig) then
+     local cmp_res = os.execute("\"@CMAKE_COMMAND@\" -E compare_files "..file_new.." "..file_orig)
+     if cmp_res ~= 0 then
+        os.execute("\"@CMAKE_COMMAND@\" -E rename "..file_new.." "..file_orig)
+     else
+        os.execute("\"@CMAKE_COMMAND@\" -E remove "..file_new)
+     end
+  else
+     os.execute("\"@CMAKE_COMMAND@\" -E rename "..file_new.." "..file_orig)
+  end
+end
+
+-- ##################################################################
+-- ##             To merge several file into one                   ##
+-- ##################################################################
+EXCLUDE_CODE        = _string_split("@EXCLUDE_CODE@", ";")  --excluded code
+LUA_LIBS            = {"classes","abstract_objects"}; --name of built-in libraries
+LUA_MAIN_LIB        = {"main"};                       --name of main file
+EXCLUDE_CODE        = _string_split("@EXCLUDE_CODE@", ";")
+mod = false          --use to know if the module declarations should be copied
+write = true;        --use to know if the line should be copied
+curr_sfiles = {};    --table of parsed files 
+curr_module = {};    --table of parsed modules
+parsed_files = {};	 --table of parsed files names (parsed_files["toto"] == true means 
+					 --toto has been parsed
+
+--- Start reading entry lib and recursively write to maqao_merge_lua.lua read data
+-- Open libs and foreach read line:
+--   * open dofile() target and start over these actions
+--   * open and include requires (+ convert requires)
+-- @param filename name of the file to read
+-- @param depth depth in the module hierarchy
+-- @param dfile file where to write
+function read_file(filename, depth, dfile)
+   local nextfile = nil;
+   --print("[LUA_STATIC] read_file on file "..filename.." at depth "..depth);
+
+   -- If the file has already been parsed, does not parse it again  
+   if parsed_files[filename] == true then
+   	  return
+   end
+
+   curr_sfiles[depth] = io.open(filename,"rb");
+   parsed_files[filename] = true;
+   curr_module[depth] = nil;
+   if(curr_sfiles[depth] ~= nil) then  
+      dfile:write("do\n")
+      for line in curr_sfiles[depth]:lines() do
+         -- If the line contains with -- #PRAGMA_NOSTATIC
+         -- do not print next lines
+         if(string.match(line, "%-%- %#PRAGMA_NOSTATIC")) then
+            -- Check if a <code> is added after the PRAGMA
+            local code = string.gsub (line, "% *%-%- %#PRAGMA_NOSTATIC% *", "")
+            code = string.gsub (code, "%s", "")
+            -- If there is a <code>, check if the table EXCLUDE_CODE contains
+            -- the same string to disable to copy
+            if code ~= "" then
+               for _, _key in ipairs (EXCLUDE_CODE) do
+                  if _key == code then
+                     write = false
+                  end
+               end
+            else
+               write = false
+            end
+
+         -- If the line contains with -- #PRAGMA_STATIC
+         -- print next lines
+         elseif(string.match(line, "%-%- %#PRAGMA_STATIC")) then
+            write = true
+
+	     -- If the line begins with dofile, get the loaded file
+	     -- and call recursively this function on the file
+	     elseif(string.match(line,"^dofile") and write) then
+            nextfile = string.match(line,'".*"');
+            nextfile = string.match(nextfile,'[^"].*[^"]'); 
+            --print("[LUA_STATIC] "..filename.." dofiles "..nextfile);
+            read_file(nextfile,depth+1,dfile);
+
+	     -- If the line begins with require, get the loaded file
+	     -- and call recursively this function on the file
+	     elseif(string.match(line,"^[%s\t]*require ")  and write) then
+            nextfile = string.match(line,'".*"');
+            nextfile = string.match(nextfile,'[^"].*[^"]');
+            filefile = nextfile; 
+            nextfile = string.gsub(nextfile,"%.",'/');
+            nextfile = string.gsub(nextfile,"%.",'\\');
+            nextfile = LUA_ROOT_PATH..nextfile..".lua";
+            --print("[LUA_STATIC] "..filename.." requires "..nextfile);
+            read_file(nextfile,depth+1,dfile);
+            if curr_module[depth] ~= nil then
+               dfile:write(curr_module[depth].."\n")
+            end
+
+         -- Consider classes a global module (variables scope is extended to global)
+	     elseif(string.match(line,"module[%s]*%(\"classes\",package%.seeall%)")) then
+            -- do nothing
+
+         -- If the line is a module declaration, copy it
+         elseif(string.match(line,"module[%s]*%(.*%)")  and write) then
+            curr_module[depth] = line
+            dfile:write(line.."\n");
+            mod = true
+
+      	 -- Else, if the flag "write" is true, copy the line
+         elseif (write) then
+		    dfile:write(line.."\n");
+         end
+      end
+      dfile:write("end\n")
+      curr_sfiles[depth]:close();  
+   else
+      --print("ERROR: Input file "..filename.." can not be opened for inclusion into static file")
+      -- TODO (2017-02-17) Commenting this error message as it would be printed when attempting to open files
+      -- required in a dofile but which actually are C modules (and as such don't exist as Lua files). The correct
+      -- way to do it would be to detect at the beginning of this function if the requested file is a C module
+      -- (the plugins directory will contain a file with the function luaopen_<modulename>) and skip if yes.
+   end
+end
+
+
+--- Converts a lua file into a representation readable by C program 
+-- @param filename name of the file to convert
+-- @param name name of the generated module
+local function lua2c (filename, name)
+   -- Convert the lua file to b64
+   Base64:b64_encode_file(filename,filename..".b64");
+   -- Open files
+   local file = io.input(filename)
+   --print("Open file "..filename.." for reading")
+   local filesize = file:seek("end")
+   file:close ()
+
+   local filein = io.input(filename..".b64")
+   local fileout = io.output(filename..".b64.c.new")
+   
+   -- Print the lua module content
+   fileout:write ("static char *"..name.." = \"\"")
+   
+   -- Rewrite the file
+   for line in filein:lines() do
+      fileout:write ("\""..line:gsub("[\n]", "").."\\n\"")
+   end
+   
+   -- Print the lua module size
+   fileout:write (";\nstatic int "..name.."_size = "..filesize..";")
+   -- Print the lua module name
+   fileout:write ("\nstatic char* "..name.."_name = \""..name.."\";")
+   
+   -- Close files
+   fileout:close()
+   filein:close ()
+   
+  -- os.execute("\"@CMAKE_COMMAND@\" -E remove "..filename)
+  os.execute("\"@CMAKE_COMMAND@\" -E remove "..filename..".b64")
+
+  -- Now checking if the file is identical to an already existing one and replace it if not
+  _cmp_and_replace_file(filename..".b64.c", filename..".b64.c.new")
+end
+
+--###################################################
+--## Forge mainlib string (contains server module) ##
+--###################################################
+mainlib_dfile_name = "lua_mainmodule.lua";
+mainlib_dfile = io.open(mainlib_dfile_name,"wb");
+
+for _,lib in pairs(LUA_MAIN_LIB) 
+do
+  mod = false
+  filename = LUA_ROOT_PATH..lib..".lua";
+  read_file(filename,0,mainlib_dfile);
+end
+mainlib_dfile:close();
+lua2c(mainlib_dfile_name, "lua_mainmodule")
+
+
+--############################################################
+--## Forge libs string (contains all the other Lua modules) ##
+--############################################################
+libs_dfile_name = "lua_modules.lua";
+libs_dfile = io.open(libs_dfile_name,"wb");
+for _,lib in pairs(LUA_LIBS) 
+do
+  mod = false
+  filename = LUA_ROOT_PATH.."/built_in/"..lib..".lua";
+  read_file(filename,0,libs_dfile);
+end
+libs_dfile:close();
+lua2c(libs_dfile_name, "lua_modules");
+
+--######################################################
+--##        Generate code for built-in modules        ##
+--######################################################
+-- Generate a single lua file for the module and generate some
+-- code (C code and lua code)
+
+-- Open files
+c_header_name     = "lua_modules.h"
+c_header          = io.open(c_header_name..".new","wb");
+list_modules_name = "lua_list_modules.lua"
+list_modules      = io.open(list_modules_name,"wb");
+c_list_stub_name  = "lua_list_stub.h"
+c_list_stub       = io.open(c_list_stub_name..".new","wb");
+c_decl_stub_name  = "lua_decl_stub.h"
+c_decl_stub       = io.open(c_decl_stub_name..".new","wb");
+
+-- Get the list of modules
+local module_list = {}
+Utils:scan_dir (LUA_ROOT_PATH, module_list)
+
+-- Print the head of the module list file
+list_modules:write ("module (\"utils\", package.seeall)\n")
+list_modules:write ("-- utils._modules is a table containing all built-in modules in maqao static binary\n")
+list_modules:write ("utils._modules = {}\n")
+list_modules:write ("Table.insert(utils._modules, {name = \"madras\", s_alias = {\"madras\"}, path = \"built-in\", user = \"static\", is_stub = false, l_alias = {}})\n")
+
+-- Iterate over modules
+for i, module in pairs(module_list) do
+   -- Create the file containing the module
+   lib_dfile_name = "lua_module"..module.name..".lua";
+   lib_dfile = io.open(lib_dfile_name,"wb");
+   filename = LUA_ROOT_PATH.."/"..module.name.."/"..module.name..".lua";
+   mod = false
+   read_file(filename,0,lib_dfile);
+   lib_dfile:close();
+   c_lib="lua_"..module.name
+   lua2c (lib_dfile_name, c_lib);  
+    
+   
+   -- Insert the module in the module list file
+   if module.l_alias ~= nil then  
+      list_modules:write ("__tmp_list_module = {}\n")
+      for key, data in pairs (module.l_alias) do
+         list_modules:write ("__tmp_list_module[\""..key.."\"] = \""..data.."\"\n")
+         i = i + 1
+      end
+      if module.s_alias ~= nil then
+      	 list_modules:write ("Table.insert(utils._modules, {name = \""..module.name.."\", s_alias = {")
+         for _, alias in ipairs (module.s_alias) do
+			list_modules:write ("\""..alias.."\", ")
+         end
+         list_modules:write ("}, \"built-in\",\"static\", "..tostring(module.is_stub)..", __tmp_list_module})\n")
+      else
+         list_modules:write ("Table.insert(utils._modules, {name = \""..module.name.."\", path = \"built-in\", user = \"static\", is_stub = "..tostring(module.is_stub)..", l_alias = __tmp_list_module})\n")
+      end
+      list_modules:write ("__tmp_list_module = nil\n")
+   else
+      if module.s_alias ~= nil then
+         list_modules:write ("Table.insert(utils._modules, {name = \""..module.name.."\", s_alias = {")
+         for _, alias in ipairs (module.s_alias) do
+            list_modules:write ("\""..alias.."\", ")
+         end
+         list_modules:write ("}, path = \"built-in\", user = \"static\", is_stub = "..tostring(module.is_stub)..", l_alias = {}})\n")
+      else
+         list_modules:write ("Table.insert(utils._modules, {name = \""..module.name.."\", path = \"built-in\", user = \"static\", is_stub = "..tostring(module.is_stub)..", l_alias = {}})\n")
+      end
+   end  
+
+   -- Generate C code to load lua modules
+   c_header:write("// load built-in module "..module.name.."\n");   
+   c_header:write("#include \""..lib_dfile_name..".b64.c\"\n");   
+   c_header:write("decodestr = decode("..c_lib..","..c_lib.."_size);\n");
+   c_header:write("char* lua_msg"..i.." = lua_exec_str(context,decodestr,"..c_lib.."_size,"..c_lib.."_name);\n")
+   c_header:write("if (lua_msg"..i.." != NULL) {STDMSG(\"%s\", lua_msg"..i.."); lc_free(lua_msg"..i..");}\n");
+   c_header:write("lc_free(decodestr);\n");
+
+   -- Checks if the module contains a stub library
+   -- located in the file lib/stub/<module>_c.c
+   -- and add it in the C file linit.c
+   if module.is_stub == true then
+      c_list_stub:write ("  {\"\", luaopen_"..module.name.."_c},")
+      c_decl_stub:write ("extern int luaopen_"..module.name.."_c(lua_State * L);")
+   end
+end
+
+-- Close files
+c_header:close()
+list_modules:close()
+c_list_stub:close ()
+c_decl_stub:close()
+
+-- Replace files with the new ones if they are different
+_cmp_and_replace_file(c_header_name, c_header_name..".new")
+_cmp_and_replace_file(c_list_stub_name, c_list_stub_name..".new")
+_cmp_and_replace_file(c_decl_stub_name, c_decl_stub_name..".new")
+
+lua2c (list_modules_name, "lua_list_modules")

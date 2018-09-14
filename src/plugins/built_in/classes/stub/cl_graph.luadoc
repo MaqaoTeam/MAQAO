@@ -1,0 +1,115 @@
+--- Declares methods that can be invoked on a graph
+-- (instance of the 'graph' class)
+module graph
+
+-- ------------------ Essential functions ----------------------
+
+--- Returns predecessor nodes of a node
+-- @return predecessor nodes (as array)
+function graph_node:get_predecessors ()
+
+--- Returns successor nodes of a node
+-- @return successor nodes (as array)
+function graph_node:get_successors ()
+
+--- Returns incoming edges of a node
+-- @return incoming edges (as array)
+function graph_node:get_incoming_edges ()
+
+--- Returns outgoing edges of a node
+-- @return outgoing edges (as array)
+function graph_node:get_outgoing_edges ()
+
+--- Returns basic block contained into a node
+-- @return block
+function graph_node:get_block ()
+
+--- Returns instruction contained into a node
+-- @return instruction
+function graph_node:get_insn ()
+
+--- Returns source (origin) node of an edge
+-- @return node
+function graph_edge:get_src_node ()
+
+--- Returns destination node of an edge
+-- @return node
+function graph_edge:get_dst_node ()
+
+--- Returns data dependency data of a DDG edge
+-- @return data_dependency table (keys: "latency min", "latency max", "kind" and "distance")
+function graph_edge:get_data_dependence ()
+
+--- Returns connected component entry nodes
+-- @return list (indexed table) of nodes
+function graph_connected_component:get_entry_nodes ()
+
+--- Returns connected component nodes
+-- @return list (indexed table) of nodes
+function graph_connected_component:get_nodes ()
+
+--- Returns connected component edges
+-- @return list (indexed table) of edges
+function graph_connected_component:get_edges ()
+
+--- Returns new empty graph
+-- @return graph
+function graph:new ()
+
+--- Returns graph node2cc index
+-- @return table of pairs (key=node, value=connected component)
+function graph:get_node2cc ()
+
+--- Returns graph edge2cc index
+-- @return table of pairs (key=edge, value=connected component)
+function graph:get_edge2cc ()
+
+--- Returns graph connected components
+-- @return list (indexed table) of connected components
+function graph:get_connected_components ()
+
+--- Creates a node and inserts it into a graph
+-- New node is returned
+-- @param userdata
+-- @return new node
+function graph:add_new_node (userdata)
+
+--- Creates an edge and inserts it into a graph
+-- New edge is returned
+-- @param src source node
+-- @param dst destination node
+-- @param userdata
+-- @return new edge
+function graph:add_new_edge (src, dst, userdata)
+
+--- Frees memory allocated for a graph
+function graph:free ()
+
+--- Returns the RecMII in a DDG
+-- RecMII is minimum initiation interval due to inter-iterations data dependencies
+-- @return RecMII (number)
+function graph:get_RecMII ()
+
+--- Returns critical paths in a DDG
+-- Critical paths are longest paths (ignoring backedges, and summing latencies along edges)
+-- @param max_paths maximum number of paths to consider from an entry node. If missing, a default value is used
+-- @return list (table) of critical paths considering minimum latency values
+-- @return list (table) of critical paths considering maximum latency values
+function graph:get_DDG_critical_paths (max_paths)
+
+--- Frees memory allocated for a DDG
+function graph:DDG_free ()
+
+-- -------------------- Meta functions -------------------------
+
+--- Prints "Graph node: <address of the node>" (meta-method)
+function graph_node:tostring ()
+
+--- Prints "Graph edge: <address of the edge>" (meta-method)
+function graph_edge:tostring ()
+
+--- Prints "Graph connected component: <address of the connected component>" (meta-method)
+function graph_connected_component:tostring ()
+
+--- Prints "Graph: <address of the graph>" (meta-method)
+function graph:tostring ()

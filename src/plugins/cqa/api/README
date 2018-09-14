@@ -1,0 +1,30 @@
+Directory content
+-----------------
+ - cqa_results.lua: defines the cqa:get_cqa_results() function which
+ is the main CQA library function
+ - data_struct.lua: defines root structure of objects handled by CQA: cqa_results and cqa_context
+ - metrics.lua: defines built-in metrics, from number of instructions to FLOPs / second...
+
+Overview
+--------
+CQA computes "metrics" representing static (compile-time) features of a "target" which can be a:
+ - (binary-level) loop
+ - function body
+ - execution path (sequence of basic blocks)
+
+A metric is a value (a number or a string) or a (structured) set of values (in a table, possibly containing sub-tables etc.).
+
+Computed metrics are grouped as an object of type "cqa_results" and are structured as:
+ - cqa_results.common: common to all execution paths, often abbreviated "crc" in source code
+ - cqa_results.paths[i]: specific to the ith execution path, often abbreviated "crp" in source code
+
+cqa:get_cqa_results() itself and children (functions computing metrics) need some (potentially many) parameters. They are grouped in a "cqa_context" table.
+
+cqa:get_cqa_results () is mostly:
+1) computing requested common metrics
+2) for each path, computing requested path metrics
+
+Metrics
+-------
+Metrics are implemented as classes (in sense of Object-Oriented programming) with following attributes:
+ - 

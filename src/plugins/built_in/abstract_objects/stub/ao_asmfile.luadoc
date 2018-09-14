@@ -1,0 +1,82 @@
+--- Declares methods that can be invoked on a binary file
+-- (instance of the 'asmfile' class)
+module asmfile
+
+
+
+-- ------------------ Essential functions ----------------------
+
+--- Returns the project including a given asmfile
+-- @return a project
+function asmfile:get_project ()
+
+--- Returns the name of an asmfile
+-- @return name (string)
+function asmfile:get_name ()
+
+--- Returns the asmfile architecture name
+-- @return architecture name (string)
+function asmfile:get_arch_name ()
+
+--- Returns the name of micro-architecture used to get an asmfile
+-- @return name of the micro-architecture (string)
+function asmfile:get_uarch_name ()
+
+--- Returns the identifier of micro-architecture used to get an asmfile
+-- @return Identifier of the micro-architecture (integer)
+function asmfile:get_uarch_id ()
+
+--- Iterates over functions of an asmfile
+-- @return next function
+function asmfile:functions ()
+
+
+
+-- ------------------ Shortcut functions -----------------------
+
+--- Returns the number of functions in an asmfile
+-- @return number of functions
+function asmfile:get_nfunctions ()
+
+--- Returns the number of loops in an asmfile
+-- @return number of loops
+function asmfile:get_nloops ()
+
+--- Returns the number of blocks in an asmfile (excluding virtual blocks, not exposed in LUA structures)
+-- @return number of blocks
+function asmfile:get_nblocks ()
+
+--- Returns the number of instructions in an asmfile
+-- @return number of instructions
+function asmfile:get_ninsns ()
+
+
+
+-- -------------------- Other functions ------------------------
+
+--- Runs post dominance analysis
+function asmfile:compute_post_dominance ()
+
+--- Returns the hash value of an asmfile
+-- @return hash value (integer)
+function asmfile:get_hash ()
+
+--- Compute function start source line and function stop source line
+-- @return a table whose key is function ids and values are subtable
+-- with the following structure:
+-- <ul>
+--   <li>start: Function start source line</li>
+--   <li>stop: Function stop source line. -1 if the value can be computed 
+--             (last function of the source file)</li>
+--   <li>fct: The function</li>
+--   <li>file: Function source file string</li>
+-- </ul>
+-- @warning Only functions with debug data are saved into the table
+function asmfile:get_function_debug ()
+
+
+
+-- -------------------- Meta functions -------------------------
+
+--- Print "Asmfile: <name of the binary file>" (meta-method)
+function asmfile:tostring ()

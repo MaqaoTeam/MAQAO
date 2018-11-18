@@ -12,7 +12,7 @@ MAQAO (Modular Assembly Quality Analyzer and Optimizer)
 The following packages and softwares have to be installed before launching the installation:
 - gcc
 - g++
-- cmake (>= 2.8.8, [available here](http://www.cmake.org/cmake/resources/software.html "CMake download page"))
+- cmake (>= 2.8.8, [CMake software](http://www.cmake.org/cmake/resources/software.html "CMake download page"))
 - glibc-static
 - libstdc++-static  
  
@@ -42,10 +42,12 @@ The documentation generation is optional and need several softwares:
 - for the LUA API documentation, luadoc is needed ([LuaDoc software](http://keplerproject.github.com/luadoc/ "LuaDoc home page"))
 - for the C API documentation, doxygen is needed ([Doxygen tool](http://www.stack.nl/~dimitri/doxygen/ "Doxygen home page"))
 
-To build the documentation, go in the build directory and type:   
-` >$ make doc`   
+To build the documentation, go in the build directory and type:
+```bash
+>$ make doc
+```
 Generated files are available trough a web browser. The LUA API documentation is called   
-DeveloperGuide.html and the C API documentation is called CoreDeveloperGuide.html. Both   
+[DeveloperGuide.html](../doc/DeveloperGuide.html) and the C API documentation is called [CoreDeveloperGuide.html](../doc/CoreDeveloperGuide.html). Both   
 are located in MAQAO/doc
 
 # Running MAQAO modules

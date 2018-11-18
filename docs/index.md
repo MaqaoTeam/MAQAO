@@ -47,7 +47,7 @@ To build the documentation, go in the build directory and type:
 >$ make doc
 ```
 Generated files are available trough a web browser. The LUA API documentation is called   
-[DeveloperGuide.html](../doc/DeveloperGuide.html) and the C API documentation is called [CoreDeveloperGuide.html](../doc/CoreDeveloperGuide.html). Both   
+DeveloperGuide.html and the C API documentation is called CoreDeveloperGuide.html. Both   
 are located in MAQAO/doc
 
 # Running MAQAO modules

@@ -1,11 +1,11 @@
 MAQAO (Modular Assembly Quality Analyzer and Optimizer)
 
 <ul id="menu" style="list-style-type:none;width:600px;height:25px;">
-<li style="float:left;padding:0.2em 0.2em;"><a href="index.md">Home</a></li>
-<li style="float:left;padding:0.2em 0.2em;"><a href="news.md">News</a></li>
-<li style="float:left;padding:0.2em 0.2em;"><a href="documentation.md">Documentation</a></li>
-<li style="float:left;padding:0.2em 0.2em;"><a href="partners.md">Partners</a></li>
-<li style="float:left;padding:0.2em 0.2em;"><a href="tutorials.md">Tutorials</a></li>
+<li style="float:left;padding:0 1.8em;"><a href="index.md">Home</a></li>
+<li style="float:left;padding:0 1.8em;"><a href="news.md">News</a></li>
+<li style="float:left;padding:0 1.8em;"><a href="documentation.md">Documentation</a></li>
+<li style="float:left;padding:0 1.8em;"><a href="partners.md">Partners</a></li>
+<li style="float:left;padding:0 1.8em;"><a href="tutorials.md">Tutorials</a></li>
 </ul>
 
 # Outline

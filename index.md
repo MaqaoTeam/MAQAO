@@ -1,10 +1,9 @@
-## Menu
 ------
-
 [Home](index.md)
 [News](news.md)
 [Documentation](documentation.md)
 [Tutorials](tutorials.md)
+------
 
 # Outline
 

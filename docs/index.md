@@ -23,13 +23,19 @@ If you choose the original lua package (and not luajit) then you will also need:
 # Installation
 MAQAO is a cmake based project.   
 Go into the MAQAO folder   
-If no "build" directory is present, create it   
-` >$ mkdir build`   
-Go into the build folder:   
-` >$ cd build`   
-Then run the following commands:   
-` >$ cmake ..`   
-` >$ make`   
+If no "build" directory is present, create it
+```bash
+>$ mkdir build
+```
+Go into the build folder:
+```bash
+>$ cd build
+```
+Then run the following commands:
+```bash
+>$ cmake ..
+>$ make
+```
 
 # Documentation
 The documentation generation is optional and need several softwares:
@@ -43,20 +49,28 @@ DeveloperGuide.html and the C API documentation is called CoreDeveloperGuide.htm
 are located in MAQAO/doc
 
 # Running MAQAO modules
-A MAQAO module can be launched with the following command:   
-` >$ maqao <module> [args] `   
-For instance to list the functions in the binary /path_to/my_binary:   
-` >$ maqao analyze --list-functions /path_to/my_binary`   
+A MAQAO module can be launched with the following command:
+```bash
+>$ maqao <module> [args]
+```
+For instance to list the functions in the binary /path_to/my_binary:
+```bash
+>$ maqao analyze --list-functions /path_to/my_binary
+```
 
 
 The -h option provides help for a given module.   
 
 
-To execute user-defined MAQAO/Lua scripts, use:   
-` >$ maqao <lua-script> [args] `   
+To execute user-defined MAQAO/Lua scripts, use:
+```bash
+>$ maqao <lua-script> [args]
+```
 Note that MAQAO scripts are Lua scripts that can use the MAQAO Lua API extensions (see documentation for more information)   
 
 
-For general help on MAQAO:    
-` >$ maqao -h`
+For general help on MAQAO:
+```bash
+>$ maqao -h
+```
 

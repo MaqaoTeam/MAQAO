@@ -4,7 +4,6 @@ MAQAO (Modular Assembly Quality Analyzer and Optimizer)
 <li style="float:left;padding:0 1.8em 0 0;"><a href="index.md">Home</a></li>
 <li style="float:left;padding:0 1.8em 0 0;"><a href="news.md">News</a></li>
 <li style="float:left;padding:0 1.8em 0 0;"><a href="documentation.md">Documentation</a></li>
-<li style="float:left;padding:0 1.8em 0 0;"><a href="partners.md">Partners</a></li>
 <li style="float:left;padding:0 1.8em 0 0;"><a href="tutorials.md">Tutorials</a></li>
 </ul>
 
@@ -82,4 +81,5 @@ For general help on MAQAO:
 ```bash
 >$ maqao -h
 ```
+
 

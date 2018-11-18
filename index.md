@@ -1,8 +1,8 @@
 ------
-[Home](index.md)
-[News](news.md)
-[Documentation](documentation.md)
-[Tutorials](tutorials.md)
+[Home](index.md) - 
+[News](news.md) - 
+[Documentation](documentation.md) - 
+[Tutorials](tutorials.md) - 
 
 ------
 

@@ -2,7 +2,12 @@
 [Home](index.md) - 
 [News](news.md) - 
 [Documentation](documentation.md) - 
-[Tutorials](tutorials.md) - 
+[Tutorials](tutorials.md) -
+[Contacts](contacts.md) -
+[Team](team.md) -
+[LProf](lprof.md) -
+[CQA](cqa.md) -
+[OneView](oneview.md)
 
 ------
 
@@ -23,17 +28,31 @@ These tools are built on top of the MAQAO core capabilities:
 
 In order to make MAQAO a convenient tool for researchers, a C API is provided for anyone to build its own module and a scripting langage (Lua) has been embedded and extended to provide quick and easy access to any metric.
 
-To help industrial partners, MAQAO has been designed to have a very limited list of dependencies, all of them are included in standard Linux server distributions. Moreover, static binary releases are made to obtain a quick and worry-free installation.
+To help industrial partners, MAQAO has been designed to have a very limited list of dependencies, all of them are included in standard Linux server distributions. Moreover, static binary releases are provided to obtain a quick and worry-free installation.
 
 ## LProf
+
+Tested up to one hundred thousands cores.
 
 See the [LProf](lprof.md) dedicated page for more information.
 
 ## CQA
 
+See the [CQA](cqa.md) dedicated page for more information.
+
 ## OneView
 
+See the [OneView](oneview.md) dedicated page for more information.
+
 # Features
+
+## Architectures
+
+Currently, MAQAO handles x86 32-bit and 64-bit programs
+
+## Operating system
+
+MAQAO has been designed to help the HPC community and as such is heavily focused on platform running scientific computations. Right now, it supports Linux applications but can be compiled on both Linux and Windows (only static analyses are operational).
 
 # Documentation
 

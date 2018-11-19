@@ -27,6 +27,8 @@ To help industrial partners, MAQAO has been designed to have a very limited list
 
 ## LProf
 
+See the [LProf](lprof.md) dedicated page for more information.
+
 ## CQA
 
 ## OneView

@@ -2,8 +2,8 @@
 
 # Outline
 [Sampling](#Sampling)
-[Universal profiler](#Universal profiler)
+[Universal profiler](#Universal-profiler)
 
 # Sampling
 
-# Universal profiler
+# Universal-profiler

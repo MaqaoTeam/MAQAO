@@ -13,9 +13,7 @@ Cédric Valensi
 #### Hugo Bolloré
 
 <div>
-  <p style="float:left;padding:0.5em;border:1px solid lightblue;">
-    <img src="panda-roux-small.png" alt="Red panda" title="Cute and like apples!" />
-  </p>
+  <img style="float:left;padding:0.5em;border:1px solid lightblue;" src="panda-roux-small.png" alt="Red panda" title="Cute and like apples!" />
   <p style="line-height:196px;padding=0.5em;">
    - Ingénieur ISTY
    - ARM

@@ -11,9 +11,13 @@ Cédric Valensi
 ### Team
 
 Hugo Bolloré - ![Red panda](panda-roux-small.png "Cute and like apples!")
+Ingénieur ISTY
+ARM
 
 ----
 
-Mathieu Tribalat - ![Red panda](panda-roux-small.png "Cute but psycho!")
+![Red panda](panda-roux-small.png "Cute but psycho!") Mathieu Tribalat - Ingénieur ISTY
+DECAN
+CORE
 
 ----

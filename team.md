@@ -16,7 +16,7 @@ Cédric Valensi
   <p style="float:left;padding:0.5em;border:1px solid lightblue;">
     <img src="panda-roux-small.png" alt="Red panda" title="Cute and like apples!" />
   </p>
-  <p style="line-height:196px;">
+  <p style="line-height:196px;padding=0.5em;">
    - Ingénieur ISTY
    - ARM
   </p>
@@ -28,7 +28,7 @@ Cédric Valensi
   <p style="float:right;padding:0.5em;border:1px solid lightblue;">
     <img src="panda-roux-small.png" alt="Red panda" title="Cute but psycho!" />
   </p>
-  <p style="line-height:196px;">
+  <p style="line-height:196px;padding=0.5em;">
     Ingénieur ISTY
     DECAN
     CORE

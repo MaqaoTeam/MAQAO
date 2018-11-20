@@ -13,8 +13,8 @@ Cédric Valensi
 #### Hugo Bolloré
 
 <div>
-  <img style="float:left;padding:0.5em;border:1px solid lightblue;" src="panda-roux-small.png" alt="Red panda" title="Cute and like apples!" />
-  <p style="line-height:196px;padding=0.5em;">
+  <img style="float:left;padding:8px;border:1px solid lightblue;margin-right:8px;" src="panda-roux-small.png" alt="Red panda" title="Cute and like apples!" />
+  <p style="line-height:212px;">
    - Ingénieur ISTY
    - ARM
   </p>
@@ -23,10 +23,8 @@ Cédric Valensi
 #### Mathieu Tribalat
 
 <div>
-  <p style="float:right;padding:0.5em;border:1px solid lightblue;">
-    <img src="panda-roux-small.png" alt="Red panda" title="Cute but psycho!" />
-  </p>
-  <p style="line-height:196px;padding=0.5em;">
+  <img style="float:right;padding:8px;border:1px solid lightblue;margin-left:8px;" src="panda-roux-small.png" alt="Red panda" title="Cute but psycho!" />
+  <p style="line-height:212px;">
     Ingénieur ISTY
     DECAN
     CORE

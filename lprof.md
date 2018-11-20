@@ -1,8 +1,8 @@
 # LProf - Lightweight Profiler
 
 # Outline
-[Sampling](#Sampling)
-[Universal profiler](#Universal-profiler)
+[Sampling](#Sampling)   
+[Universal profiler](#Universal-profiler)   
 
 # Sampling
 

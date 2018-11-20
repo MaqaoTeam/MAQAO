@@ -63,7 +63,7 @@ See the [OneView](oneview.md) dedicated page for more information.
 
 MAQAO is released under LGPL3 and can be used under its terms. It also includes sources from various sources.
 
-Please refers to the [license](license.md) file for more information.
+Please refers to the [license](license-file.md) file for more information.
 
 ## Architectures
 

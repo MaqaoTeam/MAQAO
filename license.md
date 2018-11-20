@@ -1,3 +1,4 @@
+# License
 ----
 Copyright (C) 2004 - 2018 Université de Versailles Saint-Quentin-en-Yvelines (UVSQ)
 
@@ -16,7 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 ----
-[MAQAO includes LuaJIT sources which has this license statement: ]
+## MAQAO includes LuaJIT sources which has this license statement
 
 LuaJIT -- a Just-In-Time Compiler for Lua. http://luajit.org/
 
@@ -40,10 +41,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-[ MIT license: http://www.opensource.org/licenses/mit-license.php ]
+MIT license http://www.opensource.org/licenses/mit-license.php
 
 ----
-[ LuaJIT includes code from Lua 5.1/5.2, which has this license statement: ]
+### LuaJIT includes code from Lua 5.1/5.2, which has this license statement
 
 Copyright (C) 1994-2012 Lua.org, PUC-Rio.
 
@@ -66,14 +67,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 ----
-[ LuaJIT includes code from dlmalloc, which has this license statement: ]
+### LuaJIT includes code from dlmalloc, which has this license statement
 
 This is a version (aka dlmalloc) of malloc/free/realloc written by
 Doug Lea and released to the public domain, as explained at
 http://creativecommons.org/licenses/publicdomain
 
 ----
-[MAQAO includes libdwarf sources which has this license statement: ]
+## MAQAO includes libdwarf sources which has this license statement
 
 Copyright (C) 2000,2004 Silicon Graphics, Inc.  All Rights Reserved.
 
@@ -107,7 +108,7 @@ For further information regarding this notice, see:
 http://oss.sgi.com/projects/GenInfo/NoticeExplan
 
 ----
-[MAQAO includes libfcgi sources which has this license statement: ]
+## MAQAO includes libfcgi sources which has this license statement
 
 This FastCGI application library source and object code (the
 "Software") and its documentation (the "Documentation") are
@@ -139,7 +140,7 @@ OPEN MARKET HAS NO LIABILITY IN CONTRACT, TORT, NEGLIGENCE OR
 OTHERWISE ARISING OUT OF THIS SOFTWARE OR THE DOCUMENTATION.
 
 ----
-[MAQAO includes LuaFileSystem sources which has this license statement: ]
+## MAQAO includes LuaFileSystem sources which has this license statement
 
 LuaFileSystem is free software: it can be used for both academic and commercial 
 purposes at absolutely no cost. There are no royalties or GNU-like "copyleft" 

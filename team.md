@@ -10,10 +10,10 @@ Cédric Valensi
 
 ### Team
 
-Hugo Bolloré - ![Red panda](panda-roux.png "Cute and like apples!")
+Hugo Bolloré - ![Red panda](panda-roux-small.png "Cute and like apples!")
 
 ----
 
-Mathieu Tribalat - ![Red panda](panda-roux.png "Cute but psycho!")
+Mathieu Tribalat - ![Red panda](panda-roux-small.png "Cute but psycho!")
 
 ----

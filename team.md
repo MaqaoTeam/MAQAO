@@ -10,7 +10,9 @@ Cédric Valensi
 
 ### Team
 
+----
 #### Hugo Bolloré
+----
 
 <div>
   <img style="float:left;padding:8px;border:1px solid lightblue;margin-right:8px;" src="panda-roux-small.png" alt="Red panda" title="Cute and like apples!" />
@@ -20,7 +22,9 @@ Cédric Valensi
   </p>
 </div>
 
+----
 #### Mathieu Tribalat
+----
 
 <div>
   <img style="float:right;padding:8px;border:1px solid lightblue;margin-left:8px;" src="panda-roux-small.png" alt="Red panda" title="Cute but psycho!" />

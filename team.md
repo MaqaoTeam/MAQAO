@@ -27,7 +27,7 @@ Cédric Valensi
 ----
 
 <div>
-  <img style="float:right;padding:8px;border:1px solid lightblue;margin-left:8px;" src="imagespanda-roux-smaller.png" alt="Red panda" title="Cute but psycho!" />
+  <img style="float:right;padding:8px;border:1px solid lightblue;margin-left:8px;" src="images/panda-roux-smaller.png" alt="Red panda" title="Cute but psycho!" />
   <p style="line-height:146px;">
     Ingénieur ISTY    
     DECAN   

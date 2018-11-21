@@ -17,8 +17,9 @@ Cédric Valensi
 <div>
   <img style="float:left;padding:8px;border:1px solid lightblue;margin-right:8px;" src="images/panda-roux-smaller.png" alt="Red panda" title="Cute and like apples!" />
   <p style="line-height:146px;">
-   - Ingénieur ISTY
-   - ARM
+    Graduated from the french ISTY engineering school (www.isty.uvsq.fr), he also has a degree in high-performance computing and simulation.
+    In the Exascale Computing Research laboratory (http://www.exascale-computing.eu/) from 2012 to 2015, he is now in the Li-PaRAD laboratory (http://www.liparad.uvsq.fr/) working on the Mont-Blanc 3 project.
+    In charge of all the Arm related development in MAQAO.
   </p>
 </div>
 
